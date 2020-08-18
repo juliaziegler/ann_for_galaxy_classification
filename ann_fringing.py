@@ -42,13 +42,6 @@ OTHER_CODE=0 # this is the code for spectra with no comment
 FILEPATH_DATA='Documents/task_10/pickle/pickle64_sharp_set_smooth_3' # filepath where the spec_data is saved
 FILEPATH_MODEL='Documents/task_12/models/MODEL_03_smooth_3' # filepath where the models is saved
 ##############################################################################################
-# function to load metadata
-def load_metadata():
-  with fits.open('Downloads/AATSpecAllv27.fits') as metadata:
-	  GAMA_SPEC_ID_LIST=metadata[1].data['SPECID'][:] # GAMA spectrum ID
-		COMMENTS_FLAG_LIST=metadata[1].data['COMMENTS_FLAG'][:] # Flags
-	return GAMA_SPEC_ID_LIST, COMMENTS_FLAG_LIST
-  
 # function to load previously saved training and test data sets 
 def load_data_sets(filepath):
 	assert type(filepath) is str
