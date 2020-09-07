@@ -36,8 +36,8 @@ max_wavelen=8750
 DWARF_CODE=32 # this code is a placeholder, we will use it only here, corresponds to class 2
 FRINGED_CODE=64 # this is the code for fringed spectra, corresponds to class 1
 OTHER_CODE=0 # this is the code for spectra with no comment, corresponds to class 0
-FILEPATH_DATA='Documents/task_10/pickle/pickle64' # filepath where the spec_data is saved
-FILEPATH_MODEL='Documents/task_12/models/MODEL64' # filepath where the models is saved
+FILEPATH_DATA='Documents/task_11/pickle/pickle64' # filepath where the spec_data is saved
+FILEPATH_MODEL='Documents/task_11/models/MODEL64' # filepath where the models is saved
 ##############################################################################################
 # function to load previously saved training and test data sets 
 def load_data_sets(filepath):
