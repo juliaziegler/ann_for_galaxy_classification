@@ -41,7 +41,6 @@ FILEPATH_MODEL='Documents/task_12/models/MODEL64' # filepath where the models is
 ##############################################################################################
 # function to load previously saved training and test data sets 
 def load_data_sets(filepath):
-	assert type(filepath) is str
 	with open(filepath, 'rb') as pkl_in:
 		spec_data_train = pickle.load(pkl_in)
 		labels_train = pickle.load(pkl_in)
