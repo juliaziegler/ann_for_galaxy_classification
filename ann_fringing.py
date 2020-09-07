@@ -2,22 +2,19 @@
 import astropy # library with useful tools often needed in astrophysics
 from astropy.io import fits # fits is the data format used here (most common in astrophysics)
 import matplotlib.pyplot as plt # makes plots
-import numpy as np # library with useful commands for arrays of numbers
-import tensorflow as tf # useful commands for machine learning
+import numpy as np # library with useful commands for arrays 
+import tensorflow as tf # library for machine learning
 import pandas as pd # library to manage data tables
 import glob # to create list of file names
-from scipy.optimize import curve_fit # library for curve fits
 import math
 import os
-import pickle 
+import pickle # to save data sets
 from scipy.interpolate import interp1d
 from astropy.convolution import Gaussian1DKernel, interpolate_replace_nans, convolve
 ##############################################################################################
-# num spectra = 321,465
-# num spectra_64 = 6470 (~2.01%)
-# class 0: neither fringed not m-star(dwarf), class 1: fringed, class 2: m-star(dwarf)
+# class 0: neither fringed nor m-star(dwarf), class 1: fringed, class 2: m-star(dwarf)
 # define hyperparameters
-learning_rate=0.0001 # https://arxiv.org/abs/1412.6980 suggest 0.001 but this seemed a bit too hight for this problem
+learning_rate=0.0001 # https://arxiv.org/abs/1412.6980 suggest 0.001 but this seemed a bit too hight for our problem
 batch_size=10 # after 10 examples the weights will be updated
 epochs=20 # training will be repeated 20 times
 validation_split=0.1 # it will be trained on 0.9% of training data, 0.1% is put aside for validation
@@ -33,14 +30,14 @@ rec_1=tf.keras.metrics.Recall(class_id=1 , name='recall_1')
 pre_2=tf.keras.metrics.Precision(class_id=2 , name='precision_2') 
 rec_2=tf.keras.metrics.Recall(class_id=2 , name='recall_2') 
 metrics=[cac, rec_0, pre_0, rec_1, pre_1, rec_2, pre_2]
-input_shape=(4200 ,1) 
+input_shape=(4190 ,1) 
 min_wavelen=4400 
-max_wavelen=8800
-DWARF_CODE=32 # this code is a placeholder, we will use it only here
-FRINGED_CODE=64 # this is the code for fringed spectra
-OTHER_CODE=0 # this is the code for spectra with no comment
-FILEPATH_DATA='Documents/task_10/pickle/pickle64_sharp_set_smooth_3' # filepath where the spec_data is saved
-FILEPATH_MODEL='Documents/task_12/models/MODEL_03_smooth_3' # filepath where the models is saved
+max_wavelen=8750
+DWARF_CODE=32 # this code is a placeholder, we will use it only here, corresponds to class 2
+FRINGED_CODE=64 # this is the code for fringed spectra, corresponds to class 1
+OTHER_CODE=0 # this is the code for spectra with no comment, corresponds to class 0
+FILEPATH_DATA='Documents/task_10/pickle/pickle64' # filepath where the spec_data is saved
+FILEPATH_MODEL='Documents/task_12/models/MODEL64' # filepath where the models is saved
 ##############################################################################################
 # function to load previously saved training and test data sets 
 def load_data_sets(filepath):
@@ -62,14 +59,14 @@ class NN:
 		self.metrics=metrics
 	def build_model(self, input_shape):
 		# model is sequential: straightforward, limited to single-input, 
-		# single-output stacks of layers
-		# for conv layer: kernel is filter size
+		# 	single-output stacks of layers
+		# for conv layer: kernel_size is size of convolution window
 		# for conv layer: filters is number of 'copies' of the output 
-		# (we can identify as many characteristics as we have filters)
-		# (each filter uses a kernel with different weights)
-		# for pooling: max value out of four is used, other values are dropped
+		# 	(we can identify as many characteristics as we have filters)
+		# 	(each filter uses a kernel with different weights)
+		# for pooling: max value out of four(=pool_size) is used, other values are dropped
 		# for dropout: randomly sets input units to 0 with dropout rate at each step, 
-		# prevents overfitting, (scales other inputs up)
+		# 	prevents overfitting
 		self.pool_size=4
 		self.dropout=0.6
 		self.kernel_size_0=9
@@ -125,7 +122,7 @@ class NN:
 		x_4 = tf.keras.layers.MaxPooling1D(pool_size=self.pool_size)(x_4)
 		x_4 = tf.keras.layers.Flatten()(x_4)
 		x_4 = tf.keras.layers.Dropout(self.dropout)(x_4)
-		# concatenate all four convolution blocks
+		# concatenate all five convolution blocks
 		x_all = tf.keras.layers.Concatenate()([x_0, x_1, x_2, x_3, x_4])
 		x_all = tf.keras.layers.Dense(2000, activation='relu')(x_all)
 		x_all = tf.keras.layers.Dense(1000, activation='relu')(x_all)
@@ -194,7 +191,7 @@ class NN:
 		plt.plot(epochs, f1_2, 'b^', label='F1 score class 2')
 		plt.plot(epochs, val_f1_2, 'g^', label='validation F1 score class 2')
 		plt.xlabel('Epoch')
-		plt.ylabel(' ')
+		plt.ylabel('Score')
 		plt.title('Loss Curve for Problem: Fringing and M-star'+ ', learning rate='+ 
 			   str(learning_rate)+ ', batch size='+ str(batch_size)+ 
 			   ', validation split='+ str(validation_split)+
@@ -206,7 +203,7 @@ class NN:
 			   ', trained on class ratios: 1/3, 1/3, 1/3'+
 			   ', tested on class ratios: 0.97, 0.02, 0.01')
 		plt.legend()
-		plt.savefig('Documents/task_12/Losscurve_03_smooth_3_'+ 
+		plt.savefig('Documents/task_12/Losscurve_'+ 
 			     str(learning_rate) + str(batch_size) + str(validation_split)+ 
 			     str(epochs[-1])+
 			     str(self.kernel_size_1)+str(self.kernel_size_2)+ 
