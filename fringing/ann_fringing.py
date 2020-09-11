@@ -179,7 +179,7 @@ class NN:
 		test_f1_0=2*(score[2]*score[3])/(score[2]+score[3])
 		test_f1_1=2*(score[4]*score[5])/(score[4]+score[5])
 		test_f1_2=2*(score[6]*score[7])/(score[6]+score[7])		
-		# plot all of the above but leave out first epoch (loss is too high)
+		# plot values above
 		plt.figure(figsize=(16,11))
 		plt.plot(epochs, loss, 'b.', label='loss')
 		plt.plot(epochs, val_loss, 'g.', label='validation loss')
