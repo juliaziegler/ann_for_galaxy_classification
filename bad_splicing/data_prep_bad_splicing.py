@@ -29,7 +29,7 @@ def load_metadata():
 	return GAMA_SPEC_ID_LIST, COMMENTS_FLAG_LIST
   
 # function to take a file path and extract all the spectrum ids (file_name) from it
-# spectra are sorted into different folders regarding their class (other/fringed/m-star)
+# spectra are sorted into different folders regarding their class (other/bad splicing)
 # the file_name will be compared to gama_spec_id and the respective indices are returned 
 def get_ind(filepath, GAMA_SPEC_ID_LIST):
 	assert type(filepath) is str
