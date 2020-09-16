@@ -131,14 +131,6 @@ class spectra:
 		self.wmax=self.header['WMAX']
 		self.wavelen=np.arange(start=self.wmin, stop=self.wmax, 
 				       step=((self.wmax-self.wmin)/len(self.spec_data)))
-	def spec_id(self):
-		return self.spec_id
-	def flag(self):
-		return self.flag
-	def spec_data(self):
-		return self.spec_data
-	def wavelen(self):
-		return self.wavelen
 	def fourier(self, x_values, y_values):
 		assert len(x_values) == len(y_values)
 		x_values_f=np.fft.fftfreq(len(x_values), 
@@ -160,8 +152,8 @@ class spectra:
 		wavelen_prep=wavelen_prep[lower_ind: upper_ind]	
 		wavelen_prep=wavelen_prep[lower_ind: upper_ind]	
 		# crop to input_shape (cropping all spectra to same wavelength does not guarantee
-		#same vector length, because distances between two pixels are not the same for all
-		#spectra)
+		#	same vector length, because distances between two pixels are not the same for all
+		#	spectra)
 		assert len(spec_data_prep) >= input_shape[0]
 		while len(spec_data_prep) > input_shape[0]:
 			spec_data_prep=np.delete(spec_data_prep, 0)
@@ -185,8 +177,8 @@ class spectra:
 		wavelen_prep=wavelen_prep[lower_ind: upper_ind]	
 		wavelen_prep=wavelen_prep[lower_ind: upper_ind]	
 		# crop to input_shape (cropping all spectra to same wavelength does not guarantee
-		#same vector length, because distances between two pixels are not the same for all
-		#spectra)
+		#	same vector length, because distances between two pixels are not the same for all
+		#	spectra)
 		assert len(spec_data_prep) >= input_shape[0]
 		while len(spec_data_prep) > input_shape[0]:
 			spec_data_prep=np.delete(spec_data_prep, 0)
