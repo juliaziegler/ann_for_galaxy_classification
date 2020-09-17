@@ -66,12 +66,15 @@ class NN:
 		# for pooling: max value out of four(=pool_size) is used, other values are dropped
 		# for dropout: randomly sets input units to 0 with dropout rate at each step, 
 		#   prevents overfitting
-		self.kernel_size=9
-		self.pool_size=4 
+		self.kernel_size=3
+		self.pool_size=2 
 		self.dropout=0.5
 		self.model=tf.keras.Sequential(
 			[tf.keras.Input(shape=input_shape[0]),
 			tf.keras.layers.Reshape((int(input_shape[0]),1)),
+			tf.keras.layers.Conv1D(filters=8, kernel_size=self.kernel_size,
+						activation='relu'),
+			tf.keras.layers.MaxPooling1D(pool_size=self.pool_size),
 			tf.keras.layers.Conv1D(filters=16, kernel_size=self.kernel_size,
 						activation='relu'),
 			tf.keras.layers.MaxPooling1D(pool_size=self.pool_size),
@@ -84,8 +87,12 @@ class NN:
 			tf.keras.layers.Conv1D(filters=128, kernel_size=self.kernel_size, 
 						activation='relu'),
 			tf.keras.layers.MaxPooling1D(pool_size=self.pool_size),
+			tf.keras.layers.Conv1D(filters=256, kernel_size=self.kernel_size, 
+						activation='relu'),
+			tf.keras.layers.MaxPooling1D(pool_size=self.pool_size),
 			tf.keras.layers.Flatten(),
 			tf.keras.layers.Dropout(self.dropout),
+			tf.keras.layers.Dense(1000, activation='relu'),			 
 			tf.keras.layers.Dense(200, activation='relu'),
 			tf.keras.layers.Dense(20, activation='relu'),
 			tf.keras.layers.Dropout(self.dropout),
