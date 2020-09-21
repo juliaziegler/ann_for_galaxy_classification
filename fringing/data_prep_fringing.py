@@ -6,7 +6,6 @@ import numpy as np # library with useful commands for arrays
 import tensorflow as tf # library for machine learning
 import pandas as pd # library to manage data tables
 import glob # to create list of file names
-import math
 import os
 import pickle 
 import copy
