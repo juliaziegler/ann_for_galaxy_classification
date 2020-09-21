@@ -1,16 +1,9 @@
 # import libraries
-import astropy # library with useful tools often needed in astrophysics
-from astropy.io import fits # fits is the data format used here (most common in astrophysics)
 import matplotlib.pyplot as plt # makes plots
 import numpy as np # library with useful commands for arrays 
 import tensorflow as tf # library for machine learning
 import pandas as pd # library to manage data tables
-import glob # to create list of file names
-import math
-import os
 import pickle # to save data sets
-from scipy.interpolate import interp1d
-from astropy.convolution import Gaussian1DKernel, interpolate_replace_nans, convolve
 ##############################################################################################
 # class 0: neither fringed nor m-star(dwarf), class 1: fringed, class 2: m-star(dwarf)
 # define hyperparameters
