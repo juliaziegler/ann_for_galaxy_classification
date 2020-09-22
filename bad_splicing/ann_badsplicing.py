@@ -61,7 +61,7 @@ class NN:
 		#   prevents overfitting
 		self.kernel_size=3
 		self.pool_size=4 
-		self.dropout=0.3
+		self.dropout=0.2
 		self.model=tf.keras.Sequential(
 			[tf.keras.Input(shape=input_shape[0]),
 			tf.keras.layers.Reshape((int(input_shape[0]),1)),
