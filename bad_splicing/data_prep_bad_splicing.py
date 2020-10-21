@@ -22,7 +22,7 @@ FILEPATH_DATA='Documents/task_512/pickle/pickle_512' # filepath where the spec_d
 #############################################################################################	
 # function to load metadata
 def load_metadata():
-  with fits.open('Downloads/AATSpecAllv27.fits') as metadata:
+  with fits.open('Downloads/AATSpecAllv27.fits') as metadata: # open list containing spec_ids and comments 
 	  GAMA_SPEC_ID_LIST=metadata[1].data['SPECID'][:] # GAMA spectrum ID
 		COMMENTS_FLAG_LIST=metadata[1].data['COMMENTS_FLAG'][:] # Flags
 	return GAMA_SPEC_ID_LIST, COMMENTS_FLAG_LIST
